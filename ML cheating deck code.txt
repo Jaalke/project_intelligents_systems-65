@@ -1,0 +1,20 @@
+in ml.py: (trained against old ml models)
+        stock = state.get_stock()
+        
+        stock_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for card in stock:
+            if card is not str:
+                stock_list[card if card is not None and card < 8 else 0] = 1
+        feature_set += stock_list
+
+in state.py:
+	def get_stock(self):
+		return self.__deck.get_stock_yay()
+        
+in deck.py:
+	def get_stock_yay(self):
+		if self.get_stock_size() > 0:
+
+			return self.__stock
+
+		return [] 
