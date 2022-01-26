@@ -92,7 +92,7 @@ def load_player(name, classname='Bot'):
         player.__init__()
         return player
     except:
-        print('ERROR: Could not load the class "Bot" {} from file {}.'.format(classname, path))
+        # print('ERROR: Could not load the class "Bot" {} from file {}.'.format(classname, path))
         traceback.print_exc()
         sys.exit()
 
