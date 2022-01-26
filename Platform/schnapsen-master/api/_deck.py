@@ -104,8 +104,16 @@ class Deck:
 	# Returns a list of all cards currently in the stock
 	def get_stock(self):
 		if self.get_stock_size() > 0:
+			
+			return self.__stock if self.__signature is None else [self.__stock[0]] + ["U"]*(self.get_stock_size()-1)
 
-			return self.__stock if self.__signature is None else [self.__stock[0]] + ['U']*(self.get_stock_size()-1)
+		return []
+		
+	# LUCY CODE
+	def get_stock_yay(self):
+		if self.get_stock_size() > 0:
+
+			return self.__stock
 
 		return []
 

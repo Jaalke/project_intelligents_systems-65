@@ -412,6 +412,10 @@ class State:
 		"""
 		return self.__deck.get_stock_size()
 
+	#LUCY CODE
+	def get_stock(self):
+		return self.__deck.get_stock_yay()
+
 	def get_phase(self):
 		"""
 		:return: The current phase

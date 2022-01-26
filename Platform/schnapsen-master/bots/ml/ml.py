@@ -4,7 +4,7 @@ A basic adaptive bot. This is part of the third worksheet.
 
 """
 
-from api import State, util
+from api import State, Deck, util
 import random, os
 from itertools import chain
 
@@ -14,6 +14,7 @@ import joblib
 # with a different name, point this line to its path.
 DEFAULT_MODEL = os.path.dirname(os.path.realpath(__file__)) + '/model.pkl'
 
+
 class Bot:
 
     __randomize = True
@@ -21,7 +22,7 @@ class Bot:
     __model = None
 
     def __init__(self, randomize=True, model_file=DEFAULT_MODEL):
-
+    
         print(model_file)
         self.__randomize = randomize
 
@@ -56,7 +57,7 @@ class Bot:
             # IMPLEMENT: Add a function call so that 'value' will
             # contain the predicted value of 'next_state'
             # NOTE: This is different from the line in the minimax/alphabeta bot
-            value = ???
+            value = self.heuristic(next_state) # ???
 
             if maximizing(state):
                 if value > best_value:
@@ -107,35 +108,39 @@ def features(state):
     feature_set = []
 
     # Add player 1's points to feature set
-    p1_points = ???
+    p1_points = state.get_points(1)
 
     # Add player 2's points to feature set
-    p2_points = ???
+    p2_points = state.get_points(2)
 
     # Add player 1's pending points to feature set
-    p1_pending_points = ???
+    p1_pending_points = state.get_pending_points(1)
 
     # Add plauer 2's pending points to feature set
-    p2_pending_points = ???
+    p2_pending_points = state.get_pending_points(2)
 
     # Get trump suit
-    trump_suit = ???
+    trump_suit = state.get_trump_suit()
 
     # Add phase to feature set
-    phase = ???
+    phase = state.get_phase()
 
     # Add stock size to feature set
-    stock_size = ???
+    stock_size = state.get_stock_size()
 
     # Add leader to feature set
-    leader = ???
+    leader = state.leader()
 
     # Add whose turn it is to feature set
-    whose_turn = ???
+    whose_turn = state.whose_turn()
 
     # Add opponent's played card to feature set
-    opponents_played_card = ???
-
+    opponents_played_card = state.get_opponents_played_card()
+    
+    #CUSTOM
+    stock = state.get_stock()
+    
+    tricks = state.get_prev_trick()
 
     ################## You do not need to do anything below this line ########################
 
@@ -187,5 +192,17 @@ def features(state):
     opponents_played_card_onehot[opponents_played_card if opponents_played_card is not None else 20] = 1
     feature_set += opponents_played_card_onehot
 
+    # CUSTOM
+    stock_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for card in stock:
+        if card is not str:
+            stock_list[card if card is not None and card < 8 else 0] = 1
+    feature_set += stock_list
+    
+    trick_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for trick in tricks:
+        trick_list[trick if trick is not None else 0] = 1
+    feature_set += trick_list
+    
     # Return feature set
     return feature_set
